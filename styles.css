@@ -50,6 +50,12 @@ nav {
     left: 50%;
     transform: translateX(-50%);
     letter-spacing: -0.5px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-title:hover {
+    color: #0071e3;
 }
 
 /* Main content styles */
@@ -392,4 +398,327 @@ footer {
 
 .align-center {
     align-items: center;
+}
+
+/* Template Page Styles */
+.template-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.template-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.template-section h2 {
+    color: #1d1d1f;
+    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.template-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.form-group label {
+    color: #1d1d1f;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.form-group input {
+    padding: 1rem;
+    border: 1px solid #d2d2d7;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    background-color: white;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #0071e3;
+    box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.1);
+}
+
+.template-button {
+    padding: 1.25rem 2rem;
+    background-color: #0071e3;
+    color: white;
+    border: none;
+    border-radius: 980px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+.template-button:hover {
+    background-color: #0077ed;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.template-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.command-output {
+    margin-top: 2rem;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.command-output textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 1.5rem;
+    border: 1px solid #d2d2d7;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: vertical;
+    background-color: white;
+    margin-bottom: 1.5rem;
+}
+
+.copy-button {
+    padding: 1rem 2rem;
+    background-color: #0071e3;
+    color: white;
+    border: none;
+    border-radius: 980px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+}
+
+.copy-button:hover {
+    background-color: #0077ed;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.copy-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Template Menu Button Styles */
+.template-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1.5rem;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 1rem;
+}
+
+.template-menu-button:hover {
+    background-color: #f5f5f7;
+    border-color: #0071e3;
+}
+
+.template-menu-button.active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-color: #0071e3;
+}
+
+.template-menu-button .button-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.template-menu-button .button-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1d1d1f;
+    flex: 1;
+    text-align: left;
+}
+
+.template-menu-button .button-arrow {
+    font-size: 1rem;
+    color: #86868b;
+    transition: transform 0.3s ease;
+}
+
+.template-menu-button.active .button-arrow {
+    transform: rotate(180deg);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .template-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .template-section {
+        padding: 1.5rem;
+    }
+    
+    .template-form {
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+    
+    .command-output {
+        padding: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .template-section {
+        padding: 1rem;
+    }
+    
+    .template-form {
+        padding: 1rem;
+        gap: 1.25rem;
+    }
+    
+    .form-group input {
+        padding: 0.875rem;
+    }
+    
+    .template-button,
+    .copy-button {
+        padding: 1rem;
+    }
+}
+
+/* Navigation Buttons */
+.nav-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.nav-button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 16px;
+    text-decoration: none;
+    color: #1d1d1f;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: #0071e3;
+}
+
+.nav-button:active {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.button-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.button-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #1d1d1f;
+}
+
+.button-description {
+    font-size: 1rem;
+    color: #515154;
+    line-height: 1.4;
+}
+
+@media screen and (max-width: 768px) {
+    .nav-buttons {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .nav-button {
+        padding: 1.5rem;
+    }
+    
+    .button-icon {
+        font-size: 1.75rem;
+    }
+    
+    .button-text {
+        font-size: 1.25rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .nav-button {
+        padding: 1.25rem;
+    }
+    
+    .button-icon {
+        font-size: 1.5rem;
+    }
+    
+    .button-text {
+        font-size: 1.1rem;
+    }
 } 

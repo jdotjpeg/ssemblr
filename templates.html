@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cisco CLI Command Templates">
+    <meta name="keywords" content="cisco, cli, commands, networking, templates">
+    <title>SSemblr - Templates</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="burger-menu">
+                    <div class="burger-line"></div>
+                    <div class="burger-line"></div>
+                    <div class="burger-line"></div>
+                </div>
+                <a href="index.html" class="nav-title">Ssemblr</a>
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="commands.html" class="nav-link">Commands</a>
+                    <a href="templates.html" class="nav-link">Templates</a>
+                    <a href="#" class="nav-link">About</a>
+                    <a href="#" class="nav-link">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Configuration Templates</h1>
+        <p>Generate basic configuration templates for Cisco routers and switches. These templates provide a starting point for device configuration.</p>
+
+        <div class="template-container">
+            <div class="template-section">
+                <button class="template-menu-button" id="routerMenuButton">
+                    <span class="button-icon">🖥️</span>
+                    <span class="button-text">Router Configuration</span>
+                    <span class="button-arrow">▼</span>
+                </button>
+                <div class="template-form" id="routerForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="routerHostname">Hostname</label>
+                        <input type="text" id="routerHostname" placeholder="Enter router hostname">
+                    </div>
+                    <div class="form-group">
+                        <label for="routerConsolePassword">Console Password</label>
+                        <input type="password" id="routerConsolePassword" placeholder="Enter console password">
+                    </div>
+                    <div class="form-group">
+                        <label for="routerEnablePassword">Enable Password</label>
+                        <input type="password" id="routerEnablePassword" placeholder="Enter enable password">
+                    </div>
+                    <div class="form-group">
+                        <label for="routerBanner">Banner Message</label>
+                        <input type="text" id="routerBanner" placeholder="Enter banner message">
+                    </div>
+                    <button id="generateRouterConfig" class="template-button">Generate Router Configuration</button>
+                </div>
+                <div class="command-output" id="routerOutput" style="display: none;">
+                    <textarea id="routerConfigOutput" readonly></textarea>
+                    <button id="copyRouterConfig" class="copy-button">Copy Configuration</button>
+                </div>
+            </div>
+
+            <div class="template-section">
+                <button class="template-menu-button" id="switchMenuButton">
+                    <span class="button-icon">🔌</span>
+                    <span class="button-text">Switch Configuration</span>
+                    <span class="button-arrow">▼</span>
+                </button>
+                <div class="template-form" id="switchForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="switchHostname">Hostname</label>
+                        <input type="text" id="switchHostname" placeholder="Enter switch hostname">
+                    </div>
+                    <div class="form-group">
+                        <label for="switchConsolePassword">Console Password</label>
+                        <input type="password" id="switchConsolePassword" placeholder="Enter console password">
+                    </div>
+                    <div class="form-group">
+                        <label for="switchEnablePassword">Enable Password</label>
+                        <input type="password" id="switchEnablePassword" placeholder="Enter enable password">
+                    </div>
+                    <div class="form-group">
+                        <label for="switchDefaultGateway">Default Gateway</label>
+                        <input type="text" id="switchDefaultGateway" placeholder="Enter default gateway IP">
+                    </div>
+                    <div class="form-group">
+                        <label for="switchBanner">Banner Message</label>
+                        <input type="text" id="switchBanner" placeholder="Enter banner message">
+                    </div>
+                    <button id="generateSwitchConfig" class="template-button">Generate Switch Configuration</button>
+                </div>
+                <div class="command-output" id="switchOutput" style="display: none;">
+                    <textarea id="switchConfigOutput" readonly></textarea>
+                    <button id="copySwitchConfig" class="copy-button">Copy Configuration</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 jdotjpeg. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="templates.js"></script>
+</body>
+</html> 
