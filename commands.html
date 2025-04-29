@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cisco CLI Command Assembler">
+    <meta name="keywords" content="cisco, cli, commands, networking">
+    <title>Command Assembler - SSemblr</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="burger-menu">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="commands.html" class="nav-link">Commands</a>
+                <a href="#" class="nav-link">About</a>
+                <a href="#" class="nav-link">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Cisco CLI Command Assembler</h1>
+        
+        <div class="command-builder">
+            <div class="command-section">
+                <h2>Select Command Type</h2>
+                <select id="commandType" class="command-select">
+                    <option value="">-- Select a command type --</option>
+                    <option value="interface">Interface Configuration</option>
+                    <option value="routing">Routing</option>
+                    <option value="security">Security</option>
+                    <option value="vlan">VLAN Configuration</option>
+                    <option value="acl">ACL Configuration</option>
+                </select>
+            </div>
+
+            <div class="command-section">
+                <h2>Command Options</h2>
+                <div id="commandOptions" class="options-container">
+                    <!-- Dynamic options will be inserted here -->
+                </div>
+            </div>
+
+            <div class="command-section">
+                <h2>Generated Command</h2>
+                <div class="command-output">
+                    <textarea id="generatedCommand" readonly></textarea>
+                    <button id="copyCommand" class="copy-button">Copy Command</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 jdotjpeg. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="commands.js"></script>
+</body>
+</html> 
