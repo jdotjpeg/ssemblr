@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const commandTemplates = {
         interface: {
             options: [
-                { type: 'select', id: 'interfaceType', label: 'Interface Type', options: ['GigabitEthernet', 'FastEthernet', 'Serial'] },
-                { type: 'text', id: 'interfaceNumber', label: 'Interface Number' },
+                { type: 'select', id: 'interfaceType', label: 'Interface Type', options: ['GigabitEthernet', 'FastEthernet', 'Serial', 'Loopback'] },
+                { type: 'text', id: 'interfaceNumber', label: 'Interface Number', placeholder: 'Enter interface number' },
                 { type: 'select', id: 'operation', label: 'Operation', options: ['configure', 'shutdown', 'no shutdown'] },
                 { type: 'text', id: 'ipAddress', label: 'IP Address (optional)' },
                 { type: 'text', id: 'subnetMask', label: 'Subnet Mask (optional)' }
@@ -75,15 +75,25 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         vlan: {
             options: [
-                { type: 'text', id: 'vlanNumber', label: 'VLAN Number' },
-                { type: 'text', id: 'vlanName', label: 'VLAN Name' },
+                { type: 'text', id: 'vlanNumbers', label: 'VLAN Numbers (comma-separated)' },
+                { type: 'text', id: 'vlanNames', label: 'VLAN Names (comma-separated)' },
                 { type: 'select', id: 'operation', label: 'Operation', options: ['create', 'delete'] }
             ],
             generate: (values) => {
-                if (values.operation === 'create') {
-                    return `vlan ${values.vlanNumber}\nname ${values.vlanName}`;
-                }
-                return `no vlan ${values.vlanNumber}`;
+                const vlanNumbers = values.vlanNumbers.split(',').map(num => num.trim());
+                const vlanNames = values.vlanNames.split(',').map(name => name.trim());
+                let command = '';
+                vlanNumbers.forEach((vlanNumber, index) => {
+                    if (values.operation === 'create') {
+                        command += `vlan ${vlanNumber}\n`;
+                        if (vlanNames[index]) {
+                            command += `name ${vlanNames[index]}\n`;
+                        }
+                    } else {
+                        command += `no vlan ${vlanNumber}\n`;
+                    }
+                });
+                return command.trim();
             }
         },
         acl: {
@@ -206,9 +216,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const input = document.getElementById(option.id);
                 if (input) {
                     values[option.id] = input.value;
+                    // Set placeholder for Loopback interface
+                    if (option.id === 'interfaceNumber' && values['interfaceType'] === 'Loopback') {
+                        input.placeholder = '1-65535';
+                    } else if (option.id === 'interfaceNumber') {
+                        input.placeholder = 'Enter interface number';
+                    }
                 }
             });
-            
             generatedCommand.value = commandTemplates[selectedType].generate(values);
         } else {
             generatedCommand.value = '';
