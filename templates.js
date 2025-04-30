@@ -35,6 +35,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const switchEnablePassword = document.getElementById('switchEnablePassword');
     const switchDefaultGateway = document.getElementById('switchDefaultGateway');
     const switchBanner = document.getElementById('switchBanner');
+    const routerDomainName = document.getElementById('routerDomainName');
+    const routerVtyPassword = document.getElementById('routerVtyPassword');
+    const routerInterface = document.getElementById('routerInterface');
+    const routerIPAddress = document.getElementById('routerIPAddress');
+    const routerSubnetMask = document.getElementById('routerSubnetMask');
+    const routerDescription = document.getElementById('routerDescription');
+    const routerDefaultGateway = document.getElementById('routerDefaultGateway');
+    const routerStaticRoute = document.getElementById('routerStaticRoute');
+    const routerNTP = document.getElementById('routerNTP');
+    const routerSNMP = document.getElementById('routerSNMP');
+    const routerSyslog = document.getElementById('routerSyslog');
 
     // Get output elements
     const routerConfigOutput = document.getElementById('routerConfigOutput');
@@ -44,11 +55,68 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyRouterConfig = document.getElementById('copyRouterConfig');
     const copySwitchConfig = document.getElementById('copySwitchConfig');
 
+    // Interface Management
+    const interfaceContainer = document.getElementById('interfaceContainer');
+    const addInterfaceButton = document.getElementById('addInterface');
+
+    // Handle interface type changes
+    function handleInterfaceTypeChange(select) {
+        const interfaceGroup = select.closest('.interface-group');
+        const standardInterface = interfaceGroup.querySelector('.standard-interface');
+        const loopbackInterface = interfaceGroup.querySelector('.loopback-interface');
+        
+        if (select.value === 'Loopback') {
+            standardInterface.style.display = 'none';
+            loopbackInterface.style.display = 'flex';
+        } else {
+            standardInterface.style.display = 'flex';
+            loopbackInterface.style.display = 'none';
+        }
+    }
+
+    // Add event listener for interface type changes
+    document.querySelectorAll('.routerInterfaceType').forEach(select => {
+        select.addEventListener('change', function() {
+            handleInterfaceTypeChange(this);
+        });
+    });
+
+    addInterfaceButton.addEventListener('click', function() {
+        const newInterfaceGroup = document.querySelector('.interface-group').cloneNode(true);
+        newInterfaceGroup.querySelectorAll('input, select').forEach(input => {
+            input.value = '';
+        });
+        newInterfaceGroup.querySelector('.remove-interface').style.display = 'block';
+        
+        // Add event listener for the new interface type select
+        const newSelect = newInterfaceGroup.querySelector('.routerInterfaceType');
+        newSelect.addEventListener('change', function() {
+            handleInterfaceTypeChange(this);
+        });
+        
+        interfaceContainer.appendChild(newInterfaceGroup);
+    });
+
+    interfaceContainer.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-interface')) {
+            const interfaceGroup = e.target.closest('.interface-group');
+            if (document.querySelectorAll('.interface-group').length > 1) {
+                interfaceGroup.remove();
+            }
+        }
+    });
+
     // Generate router configuration
     document.getElementById('generateRouterConfig').addEventListener('click', function() {
         const config = generateRouterConfig();
-        routerConfigOutput.value = config;
-        routerOutput.style.display = 'block';
+        if (config) {
+            console.log(config);
+            routerConfigOutput.value = config;
+            routerOutput.style.display = 'block';
+        } else {
+            console.error('Failed to generate router configuration.');
+            routerOutput.style.display = 'none';
+        }
     });
 
     // Generate switch configuration
@@ -73,14 +141,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function generateRouterConfig() {
-        return `enable
+        let config = `enable
 configure terminal
-hostname ${routerHostname.value}
 !
+! Basic Configuration
+hostname ${routerHostname.value}
+${routerDomainName.value ? `ip domain-name ${routerDomainName.value}` : ''}
+!
+! Security Configuration
 enable secret ${routerEnablePassword.value}
 !
 line con 0
 password ${routerConsolePassword.value}
+login
+exit
+!
+line vty 0 4
+password ${routerVtyPassword.value}
 login
 exit
 !
@@ -89,8 +166,55 @@ banner motd #${routerBanner.value}#
 service password-encryption
 no ip domain-lookup
 !
+! Interface Configuration`;
+
+        // Generate interface configurations
+        document.querySelectorAll('.interface-group').forEach(group => {
+            const interfaceType = group.querySelector('.routerInterfaceType').value;
+            const interfaceSlot = group.querySelector('.routerInterfaceSlot').value;
+            const interfaceSubSlot = group.querySelector('.routerInterfaceSubSlot').value;
+            const interfacePort = group.querySelector('.routerInterfacePort').value;
+            const loopbackNumber = group.querySelector('.routerLoopbackNumber')?.value;
+            const ipAddress = group.querySelector('.routerIPAddress').value;
+            const subnetMask = group.querySelector('.routerSubnetMask').value;
+            const description = group.querySelector('.routerDescription').value;
+
+            if (interfaceType) {
+                // Handle different interface formats based on type
+                let interfaceName;
+                if (interfaceType === 'Loopback') {
+                    interfaceName = `${interfaceType}${loopbackNumber}`;
+                } else if (interfaceType === 'Serial') {
+                    interfaceName = `${interfaceType}${interfaceSlot}/${interfaceSubSlot}${interfacePort ? `/${interfacePort}` : ''}`;
+                } else {
+                    // For GigabitEthernet and FastEthernet, use the three-part format
+                    interfaceName = `${interfaceType}${interfaceSlot}/${interfaceSubSlot}${interfacePort ? `/${interfacePort}` : ''}`;
+                }
+
+                config += `\ninterface ${interfaceName}`;
+                if (ipAddress && subnetMask) {
+                    config += `\nip address ${ipAddress} ${subnetMask}`;
+                }
+                if (description) {
+                    config += `\ndescription ${description}`;
+                }
+                config += `\nno shutdown\nexit\n!`;
+            }
+        });
+
+        config += `\n! Routing Configuration
+${routerDefaultGateway.value ? `ip default-gateway ${routerDefaultGateway.value}` : ''}
+${routerStaticRoute.value ? `ip route ${routerStaticRoute.value}` : ''}
+!
+! Services Configuration
+${routerNTP.value ? `ntp server ${routerNTP.value}` : ''}
+${routerSNMP.value ? `snmp-server community ${routerSNMP.value} RO` : ''}
+${routerSyslog.value ? `logging ${routerSyslog.value}` : ''}
+!
 end
 write memory`;
+
+        return config;
     }
 
     function generateSwitchConfig() {
