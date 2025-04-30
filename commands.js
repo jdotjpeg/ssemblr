@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const commandTemplates = {
         interface: {
             options: [
-                { type: 'select', id: 'interfaceType', label: 'Interface Type', options: ['GigabitEthernet', 'FastEthernet', 'Serial', 'Loopback'] },
-                { type: 'text', id: 'interfaceNumber', label: 'Interface Number', placeholder: 'Enter interface number' },
+                { type: 'select', id: 'interfaceType', label: 'Interface Type', options: ['GigabitEthernet', 'FastEthernet', 'Serial'] },
+                { type: 'text', id: 'interfaceNumber', label: 'Interface Number' },
                 { type: 'select', id: 'operation', label: 'Operation', options: ['configure', 'shutdown', 'no shutdown'] },
                 { type: 'text', id: 'ipAddress', label: 'IP Address (optional)' },
                 { type: 'text', id: 'subnetMask', label: 'Subnet Mask (optional)' }
@@ -216,14 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const input = document.getElementById(option.id);
                 if (input) {
                     values[option.id] = input.value;
-                    // Set placeholder for Loopback interface
-                    if (option.id === 'interfaceNumber' && values['interfaceType'] === 'Loopback') {
-                        input.placeholder = '1-65535';
-                    } else if (option.id === 'interfaceNumber') {
-                        input.placeholder = 'Enter interface number';
-                    }
                 }
             });
+            
             generatedCommand.value = commandTemplates[selectedType].generate(values);
         } else {
             generatedCommand.value = '';
