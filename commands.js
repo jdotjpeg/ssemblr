@@ -33,15 +33,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 { type: 'text', id: 'subnetMask', label: 'Subnet Mask (optional)' }
             ],
             generate: (values) => {
-                let command = `interface ${values.interfaceType}${values.interfaceNumber}\n`;
-                if (values.operation === 'configure') {
-                    if (values.ipAddress && values.subnetMask) {
-                        command += `ip address ${values.ipAddress} ${values.subnetMask}\n`;
-                    }
+                let command = '';
+                
+                // Handle multiple interfaces
+                if (Array.isArray(values.interfaces)) {
+                    values.interfaces.forEach(intf => {
+                        command += `interface ${intf.interfaceType}${intf.interfaceNumber}\n`;
+                        if (intf.operation === 'configure') {
+                            if (intf.ipAddress && intf.subnetMask) {
+                                command += `ip address ${intf.ipAddress} ${intf.subnetMask}\n`;
+                            }
+                        } else {
+                            command += `${intf.operation}\n`;
+                        }
+                        command += `exit\n`;
+                    });
                 } else {
-                    command += `${values.operation}\n`;
+                    // Legacy support for single interface
+                    command += `interface ${values.interfaceType}${values.interfaceNumber}\n`;
+                    if (values.operation === 'configure') {
+                        if (values.ipAddress && values.subnetMask) {
+                            command += `ip address ${values.ipAddress} ${values.subnetMask}\n`;
+                        }
+                    } else {
+                        command += `${values.operation}\n`;
+                    }
+                    command += `exit\n`;
                 }
-                return command;
+                
+                return command.trim();
             }
         },
         routing: {
@@ -140,6 +160,34 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedType && commandTemplates[selectedType]) {
             const options = commandTemplates[selectedType].options;
             
+            // For interface configuration, create a container for multiple interfaces
+            if (selectedType === 'interface') {
+                // Create a container for interfaces with heading
+                const interfaceSection = document.createElement('div');
+                interfaceSection.className = 'interface-section';
+                
+                // Create a container for interfaces
+                const interfacesContainer = document.createElement('div');
+                interfacesContainer.id = 'interfacesContainer';
+                interfaceSection.appendChild(interfacesContainer);
+                
+                // Add the first interface form
+                addInterfaceForm(interfacesContainer);
+                
+                // Add a button to add more interfaces
+                const addButton = document.createElement('button');
+                addButton.type = 'button';
+                addButton.className = 'add-interface-button';
+                addButton.textContent = '+ Add Another Interface';
+                addButton.addEventListener('click', () => {
+                    addInterfaceForm(interfacesContainer);
+                });
+                interfaceSection.appendChild(addButton);
+                
+                commandOptions.appendChild(interfaceSection);
+                return;
+            }
+            
             options.forEach(option => {
                 const optionGroup = document.createElement('div');
                 optionGroup.className = 'option-group';
@@ -207,17 +255,120 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Function to add a new interface form
+    function addInterfaceForm(container) {
+        const interfaceForm = document.createElement('div');
+        interfaceForm.className = 'interface-form';
+        
+        // Add a header with a remove button for all except the first form
+        const formHeader = document.createElement('div');
+        formHeader.className = 'interface-form-header';
+        
+        // Add interface number label
+        const interfaceLabel = document.createElement('span');
+        interfaceLabel.className = 'interface-number-label';
+        interfaceLabel.textContent = `Interface ${container.children.length + 1}`;
+        formHeader.appendChild(interfaceLabel);
+        
+        // Add a remove button (except for the first form)
+        if (container.children.length > 0) {
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.className = 'remove-interface-button';
+            removeButton.innerHTML = '&times;'; // × symbol
+            removeButton.title = 'Remove this interface';
+            removeButton.addEventListener('click', () => {
+                container.removeChild(interfaceForm);
+                // Update interface number labels
+                Array.from(container.children).forEach((form, index) => {
+                    const label = form.querySelector('.interface-number-label');
+                    if (label) {
+                        label.textContent = `Interface ${index + 1}`;
+                    }
+                });
+                updateCommand();
+            });
+            formHeader.appendChild(removeButton);
+        }
+        
+        interfaceForm.appendChild(formHeader);
+        
+        // Create form fields based on the interface options
+        const options = commandTemplates.interface.options;
+        options.forEach(option => {
+            const optionGroup = document.createElement('div');
+            optionGroup.className = 'option-group';
+            
+            const label = document.createElement('label');
+            const uniqueId = `${option.id}_${container.children.length}`;
+            label.htmlFor = uniqueId;
+            label.textContent = option.label;
+            
+            let input;
+            if (option.type === 'select') {
+                input = document.createElement('select');
+                input.id = uniqueId;
+                input.className = option.id; // For identifying the field type
+                option.options.forEach(opt => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = opt;
+                    optionElement.textContent = opt;
+                    input.appendChild(optionElement);
+                });
+            } else {
+                input = document.createElement('input');
+                input.type = option.type;
+                input.id = uniqueId;
+                input.className = option.id; // For identifying the field type
+            }
+            
+            optionGroup.appendChild(label);
+            optionGroup.appendChild(input);
+            interfaceForm.appendChild(optionGroup);
+            
+            // Add event listener to update command when input changes
+            input.addEventListener('input', updateCommand);
+            input.addEventListener('change', updateCommand);
+        });
+        
+        container.appendChild(interfaceForm);
+        updateCommand();
+    }
+
     // Update the generated command
     function updateCommand() {
         const selectedType = commandType.value;
         if (selectedType && commandTemplates[selectedType]) {
             const values = {};
-            commandTemplates[selectedType].options.forEach(option => {
-                const input = document.getElementById(option.id);
-                if (input) {
-                    values[option.id] = input.value;
+            
+            // Special handling for interface configuration with multiple interfaces
+            if (selectedType === 'interface') {
+                const interfacesContainer = document.getElementById('interfacesContainer');
+                if (interfacesContainer) {
+                    const interfaceForms = interfacesContainer.querySelectorAll('.interface-form');
+                    if (interfaceForms.length > 0) {
+                        values.interfaces = Array.from(interfaceForms).map(form => {
+                            const interfaceValues = {};
+                            form.querySelectorAll('input, select').forEach(input => {
+                                // Extract the base field name from the class
+                                const fieldName = input.className;
+                                if (fieldName) {
+                                    interfaceValues[fieldName] = input.value;
+                                }
+                            });
+                            return interfaceValues;
+                        });
+                    }
                 }
-            });
+            } else {
+                // Standard handling for other command types
+                commandTemplates[selectedType].options.forEach(option => {
+                    const input = document.getElementById(option.id);
+                    if (input) {
+                        values[option.id] = input.value;
+                    }
+                });
+            }
             
             generatedCommand.value = commandTemplates[selectedType].generate(values);
         } else {

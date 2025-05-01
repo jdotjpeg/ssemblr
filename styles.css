@@ -871,4 +871,104 @@ footer {
 .interface-number span {
     color: #86868b;
     font-weight: 500;
+}
+
+/* Interface form styles */
+.interface-section {
+    margin-bottom: 1.5rem;
+}
+
+.interface-form {
+    background-color: #ffffff;
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.interface-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.interface-number-label {
+    font-weight: 600;
+    color: #0071e3;
+    font-size: 0.9rem;
+}
+
+.add-interface-button {
+    display: block;
+    width: auto;
+    padding: 0.5rem 1rem;
+    background-color: #f1f8ff;
+    color: #0366d6;
+    border: 1px dashed #0366d6;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.add-interface-button:hover {
+    background-color: #e6f0ff;
+    color: #005cc5;
+}
+
+.add-interface-button:active {
+    transform: translateY(1px);
+}
+
+.remove-interface-button {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f6f8fa;
+    color: #666;
+    border: 1px solid #e1e4e8;
+    border-radius: 50%;
+    font-size: 1rem;
+    line-height: 1;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.remove-interface-button:hover {
+    background-color: #fafbfc;
+    color: #d73a49;
+    border-color: #d73a49;
+}
+
+.remove-interface-button:active {
+    transform: scale(0.95);
+}
+
+/* Responsive styles for interface forms */
+@media screen and (max-width: 768px) {
+    .interface-form {
+        padding: 0.75rem;
+    }
+    
+    .add-interface-button {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .interface-form-header {
+        flex-direction: row;
+        margin-bottom: 0.75rem;
+    }
 } 
