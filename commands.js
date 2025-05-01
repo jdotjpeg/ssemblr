@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (intf.operation === 'configure') {
                             if (intf.ipAddress && intf.subnetMask) {
                                 command += `ip address ${intf.ipAddress} ${intf.subnetMask}\n`;
+                                command += 'no shutdown\n'
                             }
                         } else {
                             command += `${intf.operation}\n`;
