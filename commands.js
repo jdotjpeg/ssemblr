@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const commandTemplates = {
         interface: {
             options: [
-                { type: 'select', id: 'interfaceType', label: 'Interface Type', options: ['GigabitEthernet', 'FastEthernet', 'Serial'] },
+                { type: 'select', id: 'interfaceType', label: 'Interface Type', options: ['GigabitEthernet', 'FastEthernet', 'Serial', 'Loopback'] },
                 { type: 'text', id: 'interfaceNumber', label: 'Interface Number' },
                 { type: 'select', id: 'operation', label: 'Operation', options: ['configure', 'shutdown', 'no shutdown'] },
                 { type: 'text', id: 'ipAddress', label: 'IP Address' },
