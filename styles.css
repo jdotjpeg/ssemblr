@@ -971,4 +971,51 @@ footer {
         flex-direction: row;
         margin-bottom: 0.75rem;
     }
+}
+
+/* Password visibility toggle styles */
+.password-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.password-container input[type="password"],
+.password-container input[type="text"] {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.show-password {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.show-password input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.show-password label {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    .password-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .password-container input[type="password"],
+    .password-container input[type="text"] {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+    
+    .show-password {
+        align-self: flex-start;
+    }
 } 
