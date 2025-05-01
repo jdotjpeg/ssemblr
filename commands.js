@@ -29,8 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 { type: 'select', id: 'interfaceType', label: 'Interface Type', options: ['GigabitEthernet', 'FastEthernet', 'Serial'] },
                 { type: 'text', id: 'interfaceNumber', label: 'Interface Number' },
                 { type: 'select', id: 'operation', label: 'Operation', options: ['configure', 'shutdown', 'no shutdown'] },
-                { type: 'text', id: 'ipAddress', label: 'IP Address (optional)' },
-                { type: 'text', id: 'subnetMask', label: 'Subnet Mask (optional)' }
+                { type: 'text', id: 'ipAddress', label: 'IP Address' },
+                { type: 'text', id: 'subnetMask', label: 'Subnet Mask' },
+                { type: 'text', id: 'description', label: 'Description (optional)' }
             ],
             generate: (values) => {
                 let command = '';
@@ -42,7 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (intf.operation === 'configure') {
                             if (intf.ipAddress && intf.subnetMask) {
                                 command += `ip address ${intf.ipAddress} ${intf.subnetMask}\n`;
-                                command += 'no shutdown\n'
+                            }
+                            // Add description if provided
+                            if (intf.description) {
+                                command += `description ${intf.description}\n`;
                             }
                         } else {
                             command += `${intf.operation}\n`;
@@ -55,6 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (values.operation === 'configure') {
                         if (values.ipAddress && values.subnetMask) {
                             command += `ip address ${values.ipAddress} ${values.subnetMask}\n`;
+                        }
+                        // Add description if provided
+                        if (values.description) {
+                            command += `description ${values.description}\n`;
                         }
                     } else {
                         command += `${values.operation}\n`;
