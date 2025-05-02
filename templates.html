@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cisco CLI Command Assembler - Templates">
+    <meta name="keywords" content="cisco, ios, cli, command, template, network, configuration">
+    <title>SSemblr - Templates</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="burger-menu">
+                    <div class="burger-line"></div>
+                    <div class="burger-line"></div>
+                    <div class="burger-line"></div>
+                </div>
+                <a href="index.html" class="nav-title">Ssemblr</a>
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="commands.html" class="nav-link">Commands</a>
+                    <a href="templates.html" class="nav-link">Templates</a>
+                    <a href="https://github.com/jdotjpeg/ssemblr" class="nav-link">Github</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Device Configuration Templates</h1>
+        <p>Generate basic configuration templates for network devices. Fill in the fields below to create a complete device configuration script.</p>
+
+        <div class="template-container">
+            <div class="template-form-container">
+                <h2>Device Configuration</h2>
+                <form id="deviceConfigForm" class="template-form">
+                    <div class="form-section">
+                        <h3>Basic Settings</h3>
+                        <div class="form-group">
+                            <label for="hostname">Device Hostname</label>
+                            <input type="text" id="hostname" placeholder="Enter hostname">
+                        </div>
+                        <div class="form-group">
+                            <label for="disableDns">Disable DNS Lookup</label>
+                            <select id="disableDns">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="encryptPasswords">Encrypt Plaintext Passwords</label>
+                            <select id="encryptPasswords">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Security Settings</h3>
+                        <div class="form-group">
+                            <label for="enableSecret">Enable Secret Password</label>
+                            <div class="password-container">
+                                <input type="password" id="enableSecret" placeholder="Enter privileged exec password">
+                                <div class="show-password">
+                                    <input type="checkbox" id="showEnableSecret">
+                                    <label for="showEnableSecret">Show</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="minPasswordLength">Minimum Password Length (0-15)</label>
+                            <input type="number" id="minPasswordLength" min="0" max="15" value="8">
+                        </div>
+                        <div class="form-group">
+                            <label for="bannerMessage">MOTD Banner Message</label>
+                            <textarea id="bannerMessage" placeholder="Enter warning message for unauthorized users"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Line Configuration</h3>
+                        <div class="form-group">
+                            <label for="consolePassword">Console Password</label>
+                            <div class="password-container">
+                                <input type="password" id="consolePassword" placeholder="Enter console password">
+                                <div class="show-password">
+                                    <input type="checkbox" id="showConsolePassword">
+                                    <label for="showConsolePassword">Show</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="consoleTimeout">Console Timeout (minutes)</label>
+                            <input type="number" id="consoleTimeout" min="0" max="35791" value="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="vtyPassword">VTY Password</label>
+                            <div class="password-container">
+                                <input type="password" id="vtyPassword" placeholder="Enter VTY password">
+                                <div class="show-password">
+                                    <input type="checkbox" id="showVtyPassword">
+                                    <label for="showVtyPassword">Show</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="vtyTimeout">VTY Timeout (minutes)</label>
+                            <input type="number" id="vtyTimeout" min="0" max="35791" value="5">
+                        </div>
+                    </div>
+
+                    <button type="button" id="generateTemplate" class="template-button">Generate Configuration</button>
+                </form>
+            </div>
+
+            <div class="command-output" id="templateOutput" style="display: none;">
+                <h3>Device Configuration Script</h3>
+                <textarea id="configScript" readonly></textarea>
+                <button id="copyTemplate" class="copy-button">Copy Configuration</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 jdotjpeg. All rights reserved.</p>
+    </footer>
+
+    <script src="templates.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
