@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             options: [
                 { type: 'select', id: 'interfaceType', label: 'Interface Type', options: ['GigabitEthernet', 'FastEthernet', 'Serial', 'Loopback'] },
                 { type: 'text', id: 'interfaceNumber', label: 'Interface Number' },
-                { type: 'select', id: 'operation', label: 'Operation', options: ['configure', 'shutdown', 'no shutdown'] },
+                { type: 'select', id: 'operation', label: 'Operation', options: ['shutdown', 'no shutdown'] },
                 { type: 'text', id: 'ipAddress', label: 'IP Address' },
                 { type: 'text', id: 'subnetMask', label: 'Subnet Mask' },
                 { type: 'text', id: 'description', label: 'Description (optional)' }
@@ -40,33 +40,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (Array.isArray(values.interfaces)) {
                     values.interfaces.forEach(intf => {
                         command += `interface ${intf.interfaceType}${intf.interfaceNumber}\n`;
-                        if (intf.operation === 'configure') {
-                            if (intf.ipAddress && intf.subnetMask) {
-                                command += `ip address ${intf.ipAddress} ${intf.subnetMask}\n`;
-                            }
-                            // Add description if provided
-                            if (intf.description) {
-                                command += `description ${intf.description}\n`;
-                            }
-                        } else {
-                            command += `${intf.operation}\n`;
+                        if (intf.ipAddress && intf.subnetMask) {
+                            command += `ip address ${intf.ipAddress} ${intf.subnetMask}\n`;
                         }
+                        // Add description if provided
+                        if (intf.description) {
+                            command += `description ${intf.description}\n`;
+                        }
+                        command += `${intf.operation}\n`;
                         command += `exit\n`;
                     });
                 } else {
                     // Legacy support for single interface
                     command += `interface ${values.interfaceType}${values.interfaceNumber}\n`;
-                    if (values.operation === 'configure') {
-                        if (values.ipAddress && values.subnetMask) {
-                            command += `ip address ${values.ipAddress} ${values.subnetMask}\n`;
-                        }
-                        // Add description if provided
-                        if (values.description) {
-                            command += `description ${values.description}\n`;
-                        }
-                    } else {
-                        command += `${values.operation}\n`;
+                    if (values.ipAddress && values.subnetMask) {
+                        command += `ip address ${values.ipAddress} ${values.subnetMask}\n`;
                     }
+                    // Add description if provided
+                    if (values.description) {
+                        command += `description ${values.description}\n`;
+                    }
+                    command += `${values.operation}\n`;
                     command += `exit\n`;
                 }
                 
