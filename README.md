@@ -28,20 +28,24 @@ A web-based tool to help network engineers and students create Cisco CLI command
 ## Command Types
 
 ### ACL Configuration
+
 - Standard ACLs: Filter based on source IP
 - Extended ACLs: Filter based on source/destination IP, protocol, and port
 
 ### Interface Configuration
+
 - Configure IP addresses
 - Enable/disable interfaces
 - Set interface descriptions
 
 ### Routing
+
 - Static routes
 - RIP configuration
 - OSPF configuration
 
 ### VLAN Configuration
+
 - Create/delete VLANs
 - Assign VLAN names
 
@@ -55,6 +59,7 @@ A web-based tool to help network engineers and students create Cisco CLI command
 ## Getting Started
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/jdotjpeg/ssemblr.git
    ```
