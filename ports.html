@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn TCP/UDP ports with an interactive minigame">
+    <meta name="keywords" content="cisco, networking, ports, tcp, udp, game, learning">
+    <title>Ssemblr - Ports Challenge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="burger-menu">
+                    <div class="burger-line"></div>
+                    <div class="burger-line"></div>
+                    <div class="burger-line"></div>
+                </div>
+                <a href="index.html" class="nav-title">Ssemblr</a>
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="commands.html" class="nav-link">Commands</a>
+                    <a href="templates.html" class="nav-link">Templates</a>
+                    <a href="ports.html" class="nav-link">Ports</a>
+                    <a href="https://github.com/jdotjpeg/ssemblr" class="nav-link">Github</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>TCP/UDP Ports Challenge</h1>
+        <p>Test your knowledge of common TCP/UDP ports used in networking. Select a game mode and difficulty to begin!</p>
+
+        <div class="game-container">
+            <!-- Game setup screen -->
+            <div id="gameSetup" class="game-section">
+                <div class="form-section">
+                    <h3>Game Options</h3>
+                    <div class="form-group">
+                        <label for="gameMode">Game Mode</label>
+                        <select id="gameMode">
+                            <option value="multiple">Multiple Choice</option>
+                            <option value="matching">Matching Game</option>
+                            <option value="speed">Speed Challenge</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="difficulty">Difficulty</label>
+                        <select id="difficulty">
+                            <option value="easy">Easy - Common Ports Only</option>
+                            <option value="medium">Medium - More Ports</option>
+                            <option value="hard">Hard - Advanced Ports</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="questionCount">Number of Questions</label>
+                        <select id="questionCount">
+                            <option value="5">5 Questions</option>
+                            <option value="10" selected>10 Questions</option>
+                            <option value="20">20 Questions</option>
+                            <option value="all">All Ports</option>
+                        </select>
+                    </div>
+                    <button id="startGame" class="template-button">Start Game</button>
+                </div>
+            </div>
+
+            <!-- Game play area -->
+            <div id="gamePlay" class="game-section" style="display: none;">
+                <div class="game-header">
+                    <div class="game-progress">
+                        <span id="currentQuestion">1</span>/<span id="totalQuestions">10</span>
+                    </div>
+                    <div class="game-score">
+                        Score: <span id="score">0</span>
+                    </div>
+                    <div class="game-timer" id="timerContainer">
+                        Time: <span id="timer">0</span>s
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <h2 id="questionText">What service uses port 80?</h2>
+                </div>
+                
+                <!-- Multiple choice options -->
+                <div id="multipleChoiceContainer" class="answers-container" style="display: none;">
+                    <div id="answerOptions">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+                
+                <!-- Matching game container -->
+                <div id="matchingContainer" class="matching-container" style="display: none;">
+                    <div class="matching-ports">
+                        <!-- Will be populated by JS -->
+                    </div>
+                    <div class="matching-services">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+                
+                <!-- Speed challenge input -->
+                <div id="speedChallengeContainer" class="speed-container" style="display: none;">
+                    <input type="number" id="portAnswer" placeholder="Enter port number">
+                    <button id="submitPortAnswer" class="template-button">Submit</button>
+                </div>
+                
+                <div class="feedback-container" id="feedback" style="display: none;">
+                    <div class="feedback-content">
+                        <h3 id="feedbackTitle">Correct!</h3>
+                        <p id="feedbackMessage">HTTP uses port 80.</p>
+                        <div class="port-details">
+                            <div class="port-detail"><strong>Port:</strong> <span id="portNumber">80</span></div>
+                            <div class="port-detail"><strong>Service:</strong> <span id="portService">HTTP</span></div>
+                            <div class="port-detail"><strong>Protocol:</strong> <span id="portProtocol">TCP</span></div>
+                            <div class="port-detail"><strong>Description:</strong> <span id="portDescription">Hypertext Transfer Protocol for web pages</span></div>
+                        </div>
+                        <button id="nextQuestion" class="template-button">Next Question</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results screen -->
+            <div id="gameResults" class="game-section" style="display: none;">
+                <div class="results-container">
+                    <h2>Game Complete!</h2>
+                    <div class="results-summary">
+                        <div class="result-item">
+                            <span class="result-label">Final Score:</span>
+                            <span class="result-value" id="finalScore">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Correct Answers:</span>
+                            <span class="result-value" id="correctAnswers">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Time Taken:</span>
+                            <span class="result-value" id="timeTaken">0s</span>
+                        </div>
+                    </div>
+                    <div class="results-buttons">
+                        <button id="playAgain" class="template-button">Play Again</button>
+                        <button id="changeOptions" class="template-button secondary">Change Options</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 jdotjpeg. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="ports.js"></script>
+</body>
+</html> 
