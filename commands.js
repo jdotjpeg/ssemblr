@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const calculateButton = document.createElement('button');
                         calculateButton.type = 'button';
                         calculateButton.className = 'calculate-button';
-                        calculateButton.textContent = 'Calculate';
+                        calculateButton.textContent = 'Wildcard';
                         
                         // Add click event to calculate wildcard mask
                         calculateButton.addEventListener('click', () => {
