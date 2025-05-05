@@ -331,6 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
             gameState.correctAnswers++;
             feedbackTitle.textContent = 'Correct!';
             playCorrectSound();
+            triggerConfetti();
         } else {
             feedbackTitle.textContent = 'Incorrect!';
         }
@@ -436,6 +437,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Play correct sound
                 playCorrectSound();
+                triggerConfetti();
                 
                 // Check if all are matched
                 const allMatched = document.querySelectorAll('.matching-btn.matched').length === 10; // 5 pairs = 10 buttons
@@ -464,6 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Play correct sound
         playCorrectSound();
+        triggerConfetti();
         
         // Show feedback with the port details from the current question
         const currentPort = gameState.currentQuestionData;
@@ -504,6 +507,7 @@ document.addEventListener('DOMContentLoaded', function() {
             feedbackTitle.textContent = 'Correct!';
             feedbackMessage.textContent = `${currentPort.service} uses port ${currentPort.port}. +${10 + timeBonus} points!`;
             playCorrectSound();
+            triggerConfetti();
         } else {
             feedbackTitle.textContent = 'Incorrect!';
             feedbackMessage.textContent = `${currentPort.service} uses port ${currentPort.port}.`;
@@ -549,5 +553,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function playCorrectSound() {
         correctSound.currentTime = 0; // Reset the sound to the beginning
         correctSound.play();
+    }
+    
+    function triggerConfetti() {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
     }
 }); 
