@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const gamePlay = document.getElementById('gamePlay');
     const gameResults = document.getElementById('gameResults');
     
+    // Sound effects
+    const correctSound = document.getElementById('correctSound');
+    
     // Setup elements
     const gameModeSelect = document.getElementById('gameMode');
     const difficultySelect = document.getElementById('difficulty');
@@ -327,6 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
             gameState.score += 10;
             gameState.correctAnswers++;
             feedbackTitle.textContent = 'Correct!';
+            playCorrectSound();
         } else {
             feedbackTitle.textContent = 'Incorrect!';
         }
@@ -430,6 +434,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 gameState.score += 5;
                 scoreEl.textContent = gameState.score;
                 
+                // Play correct sound
+                playCorrectSound();
+                
                 // Check if all are matched
                 const allMatched = document.querySelectorAll('.matching-btn.matched').length === 10; // 5 pairs = 10 buttons
                 if (allMatched) {
@@ -454,6 +461,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleAllMatches() {
         // All pairs have been matched correctly
         gameState.correctAnswers++;
+        
+        // Play correct sound
+        playCorrectSound();
         
         // Show feedback with the port details from the current question
         const currentPort = gameState.currentQuestionData;
@@ -493,6 +503,7 @@ document.addEventListener('DOMContentLoaded', function() {
             gameState.correctAnswers++;
             feedbackTitle.textContent = 'Correct!';
             feedbackMessage.textContent = `${currentPort.service} uses port ${currentPort.port}. +${10 + timeBonus} points!`;
+            playCorrectSound();
         } else {
             feedbackTitle.textContent = 'Incorrect!';
             feedbackMessage.textContent = `${currentPort.service} uses port ${currentPort.port}.`;
@@ -533,5 +544,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show results
         gamePlay.style.display = 'none';
         gameResults.style.display = 'block';
+    }
+    
+    function playCorrectSound() {
+        correctSound.currentTime = 0; // Reset the sound to the beginning
+        correctSound.play();
     }
 }); 
