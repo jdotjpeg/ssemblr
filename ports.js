@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function showMatchingQuestion() {
         // Show matching container
         multipleChoiceContainer.style.display = 'none';
-        matchingContainer.style.display = 'block';
+        matchingContainer.style.display = 'flex';
         speedChallengeContainer.style.display = 'none';
         
         // Clear previous content
@@ -361,13 +361,24 @@ document.addEventListener('DOMContentLoaded', function() {
         
         questionText.textContent = 'Match the ports with their corresponding services:';
         
+        // Add section headings
+        const portsHeading = document.createElement('h3');
+        portsHeading.textContent = 'Port Numbers';
+        portsHeading.className = 'matching-heading';
+        portsContainer.appendChild(portsHeading);
+        
+        const servicesHeading = document.createElement('h3');
+        servicesHeading.textContent = 'Services';
+        servicesHeading.className = 'matching-heading';
+        servicesContainer.appendChild(servicesHeading);
+        
         // Get 5 random ports from the current question (which itself is random)
         const matchingPorts = shuffleArray(gameState.questions).slice(0, 5);
         
         // Create port buttons
         matchingPorts.forEach(port => {
             const portBtn = document.createElement('button');
-            portBtn.className = 'matching-btn port-btn';
+            portBtn.className = 'matching-btn port-btn card-style';
             portBtn.dataset.port = port.port;
             portBtn.textContent = port.port;
             
@@ -381,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create service buttons (shuffled)
         shuffleArray([...matchingPorts]).forEach(port => {
             const serviceBtn = document.createElement('button');
-            serviceBtn.className = 'matching-btn service-btn';
+            serviceBtn.className = 'matching-btn service-btn card-style';
             serviceBtn.dataset.service = port.service;
             serviceBtn.dataset.port = port.port;
             serviceBtn.textContent = port.service;
